@@ -81,7 +81,7 @@ analytics:
 # Site Author
 author:
   name             : "Bandhav Veluri"
-  avatar           : "bandhav.jpeg"
+  avatar           : "bio-photo.png"
   bio              : "PhD student at University of Washington CSE"
   location         :
   employer         :
@@ -96,7 +96,7 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           : "https://github.com/vb000"
+  github           : "vb000"
   google_plus      :
   keybase          :
   instagram        :
