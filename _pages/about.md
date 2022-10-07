@@ -13,7 +13,11 @@ I got my Bachelor's degree at the Indian Institute of Technology Roorkee and Mas
 
 ## Recent Works
 ### [NeuriCam: Video Super Resolution and Colorization Using Key Frames](https://arxiv.org/abs/2207.12496)
-_Bandhav Veluri_, Ali Saffari, Collin Pernu, Joshua Smith, Michael Taylor, Shyamnath Gollakota
+*__Bandhav Veluri__, Ali Saffari, Collin Pernu, Joshua Smith, Michael Taylor, Shyamnath Gollakota*  
 (preprint)
 
 <a href="https://github.com/vb000/NeuriCam/raw/main/model/demo.gif"><img src="https://github.com/vb000/NeuriCam/raw/main/model/demo.gif" width=288 height=162 /></a> <a href="https://github.com/vb000/NeuriCam/raw/main/model/system.png"><img src="https://github.com/vb000/NeuriCam/raw/main/model/system.png" width=300 height=140 /></a>
+
+### [A Tensor Processing Framework for CPU-Manycore Heterogeneous Systems](https://ieeexplore.ieee.org/abstract/document/9509755)
+*Lin Cheng, Peitian Pan, Zhongyuan Zhao, Krithik Ranjan, Jack Weber, __Bandhav Veluri__, Seyed Borna Ehsani, Max Ruttenberg, Dai Cheol Jung, Preslav Ivanov, Dustin Richmond, Michael B Taylor, Zhiru Zhang, Christopher Batten*  
+IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems
