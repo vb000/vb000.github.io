@@ -16,4 +16,4 @@ I got my Bachelor's degree at the Indian Institute of Technology Roorkee and Mas
 _Bandhav Veluri_, Ali Saffari, Collin Pernu, Joshua Smith, Michael Taylor, Shyamnath Gollakota
 (preprint)
 
-[<img src="https://github.com/vb000/NeuriCam/raw/main/model/demo.gif" width=45% />](https://github.com/vb000/NeuriCam/raw/main/model/demo.gif) [<img src="https://github.com/vb000/NeuriCam/raw/main/model/system.png" width=50% />](https://github.com/vb000/NeuriCam/raw/main/model/system.png)
+<a href="https://github.com/vb000/NeuriCam/raw/main/model/demo.gif"><img src="https://github.com/vb000/NeuriCam/raw/main/model/demo.gif" width=45% /></a> <a href="https://github.com/vb000/NeuriCam/raw/main/model/system.png"><img src="https://github.com/vb000/NeuriCam/raw/main/model/system.png" width=52% /></a>
