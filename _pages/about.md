@@ -15,9 +15,5 @@ I got my Bachelor's degree at the Indian Institute of Technology Roorkee and Mas
 ### [NeuriCam: Video Super Resolution and Colorization Using Key Frames](https://arxiv.org/abs/2207.12496)
 _Bandhav Veluri_, Ali Saffari, Collin Pernu, Joshua Smith, Michael Taylor, Shyamnath Gollakota
 (preprint)
-<p align="center">
-  <img src="https://github.com/vb000/NeuriCam/blob/main/model/demo.gif" />
-</p>
-<p align="center">
-  <img width=70% src="https://github.com/vb000/NeuriCam/blob/main/model/system.png" />
-</p>
+
+<img src="https://github.com/vb000/NeuriCam/blob/main/model/demo.gif" width=25% /> | <img src="https://github.com/vb000/NeuriCam/blob/main/model/system.png" width=25% />
