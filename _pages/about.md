@@ -7,14 +7,14 @@ redirect_from:
   - /about/
   - /about.html
 ---
-I'm a PhD student in Computer Science at the University of Washington. I work in the [Mobile Intelligence Lab](http://netlab.cs.washington.edu) advised by [Prof. Shyam Gollakota](https://homes.cs.washington.edu/~gshyam/) and [Prof. Michael Taylor](http://michaeltaylor.org/). I'm interested in problems at the intersection of Mobile Computing and Machine Learning. My recent work focusses on developing efficient video and audio processing algorithms for IoT devices.
+I'm a PhD student in Computer Science at the University of Washington. I work in the [Mobile Intelligence Lab](http://netlab.cs.washington.edu) advised by [Prof. Shyam Gollakota](https://homes.cs.washington.edu/~gshyam/) and [Prof. Michael Taylor](http://michaeltaylor.org/). I'm interested in Audio Processing, Machine Learning and Mobile Computing. My recent works focus on developing efficient audio & video processing algorithms for IoT devices.
 
-I got my Bachelor's degree in EE at the Indian Institute of Technology Roorkee and my Master's degree in ECE at the University of Washington. During my Master's, I was advised by Prof. Michael Taylor, and worked on developing a [deep learning framework](https://github.com/cornell-brg/hb-pytorch) for a bespoke hardware accelerator. Previously, I worked on audio signal chain projects at Texas Instruments India.
+I got my Bachelor's degree in EE at the Indian Institute of Technology Roorkee and my Master's degree in ECE at the University of Washington. During my Master's, I was advised by Prof. Michael Taylor, and developed a [deep learning framework](https://github.com/cornell-brg/hb-pytorch) for a bespoke hardware accelerator. Previously, I worked on audio processing ICs at Texas Instruments India.
 
 ## Recent Works
 <h3> <a href="https://arxiv.org/abs/2211.02250" target="_blank"> REAL-TIME TARGET SOUND EXTRACTION </a> </h3>
 *__Bandhav Veluri__, Justin Chan, Malek Itani, Tuochao Chen, Takuya Yoshioka, Shyamnath Gollakota*  
-2022 | (Under review)
+2022 | (Under review at ICASSP 2023)
 
 <video controls src="https://targetsound.cs.washington.edu/files/Gradio-Demo.mp4" width=320 height=180></video>
 
