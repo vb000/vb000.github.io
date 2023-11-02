@@ -7,7 +7,7 @@ redirect_from:
   - /about/
   - /about.html
 ---
-I'm a PhD student in Computer Science at the University of Washington. I work in the [Mobile Intelligence Lab](http://netlab.cs.washington.edu) advised by [Prof. Shyam Gollakota](https://homes.cs.washington.edu/~gshyam/) and [Prof. Michael Taylor](http://michaeltaylor.org/). I'm also working at [Meta AI](https://ai.meta.com/) as a visiting researcher. I'm interested in Speech/Audio modeling, Human-AI Interaction and Wearable Computing.
+I'm a PhD student in Computer Science at the University of Washington. I work in the [Mobile Intelligence Lab](http://netlab.cs.washington.edu) advised by [Prof. Shyam Gollakota](https://homes.cs.washington.edu/~gshyam/) and [Prof. Michael Taylor](http://michaeltaylor.org/). I'm also working at [Meta AI](https://ai.meta.com/) as a visiting researcher. I'm interested in Human-AI Interaction, Speech/Audio modeling, and Wearable Computing.
 
 My recent works focus on developing intelligent on-device applications for wearable devices. I got my Bachelor's degree at the Indian Institute of Technology Roorkee and my Master's degree at the University of Washington.
 
