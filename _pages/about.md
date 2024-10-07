@@ -19,15 +19,41 @@ My recent works focus on developing intelligent on-device applications for weara
 }
 </style>
 
+__Beyond Turn-Based Interfaces: Synchronous LLMs as Full-Duplex Dialogue Agents__  
+<small>
+Bandhav Veluri, Benjamin N Peloquin, Bokai Yu, Hongyu Gong, Shyamnath Gollakota  
+_EMNLP Main 2024_    
+<a href="https://arxiv.org/abs/2409.15594" target="_blank">
+  <img src="https://img.shields.io/badge/Paper-grey" alt="Paper">
+</a> 
+<a href="https://syncllm.cs.washington.edu/" target="_blank">
+  <img src="https://img.shields.io/badge/Website-grey" alt="Website">
+</a> 
+</small>
+<video controls poster="assets/syncllm_thumb.png" width=320 style="margin-bottom: 20px;">
+  <source src="https://syncllm.cs.washington.edu/SyncLLM.mp4" type="video/mp4">
+</video>
+
+
+__IRIS: Wireless Ring for Vision-based Smart Home Interaction__  
+<small>
+Maruchi Kim\*, Antonio Glenn\*, Bandhav Veluri\*, Yunseo Lee, Eyoel Gebre, Aditya Bagaria, Shwetak Patel, Shyamnath Gollakota  
+_ACM UIST 2024_  
+<a href="https://arxiv.org/abs/2407.18141" target="_blank">
+  <img src="https://img.shields.io/badge/Paper-grey" alt="Paper">
+</a> 
+</small>
+
+
 __Look Once to Hear: Target Speech Hearing with Noisy Examples__  
 <small>
-Bandhav Veluri*, Malek Itani\*, Tuochao Chen, Takuya Yoshioka, Shyamnath Gollakota  
+Bandhav Veluri\*, Malek Itani\*, Tuochao Chen, Takuya Yoshioka, Shyamnath Gollakota  
 _ACM CHI 2024_ &#127942; Best paper honorable mention &#127942;  
 <a href="https://arxiv.org/abs/2405.06289" target="_blank">
-  <img src="https://img.shields.io/badge/paper-grey" alt="Paper">
+  <img src="https://img.shields.io/badge/Paper-grey" alt="Paper">
 </a> 
 <a href="https://tsh.cs.washington.edu/" target="_blank">
-  <img src="https://img.shields.io/badge/website-grey" alt="Website">
+  <img src="https://img.shields.io/badge/Website-grey" alt="Website">
 </a> 
 <a href="https://github.com/vb000/LookOnceToHear" target="_blank">
   <img src="https://img.shields.io/github/stars/vb000/LookOnceToHear?style=social&label=Code" alt="GitHub">
@@ -42,9 +68,9 @@ _ACM CHI 2024_ &#127942; Best paper honorable mention &#127942;
 __SeamlessExpressiveLM: Speech Language Model for Expressive Speech-to-Speech Translation with Chain-of-Thought__  
 <small>
 Hongyu Gong, Bandhav Veluri  
-_Arxiv tech report 2024_  
+_Arxiv 2024_  
 <a href="https://arxiv.org/abs/2405.20410" target="_blank">
-  <img src="https://img.shields.io/badge/paper-grey" alt="Paper">
+  <img src="https://img.shields.io/badge/Paper-grey" alt="Paper">
 </a>  
 </small>
 
@@ -53,10 +79,10 @@ __Semantic Hearing: Programming Acoustic Scenes with Binaural Hearables__
 Bandhav Veluri\*, Malek Itani\*, Justin Chan, Takuya Yoshioka, Shyamnath Gollakota  
 _ACM UIST 2023_  
 <a href="https://arxiv.org/abs/2311.00320" target="_blank">
-  <img src="https://img.shields.io/badge/paper-grey" alt="Paper">
+  <img src="https://img.shields.io/badge/Paper-grey" alt="Paper">
 </a> 
 <a href="https://semantichearing.cs.washington.edu/" target="_blank">
-  <img src="https://img.shields.io/badge/website-grey" alt="Website">
+  <img src="https://img.shields.io/badge/Website-grey" alt="Website">
 </a> 
 <a href="https://github.com/vb000/SemanticHearing" target="_blank">
   <img src="https://img.shields.io/github/stars/vb000/SemanticHearing?style=social&label=Code" alt="GitHub">
@@ -73,10 +99,10 @@ __Real-Time Target Sound Extraction__
 Bandhav Veluri, Justin Chan, Malek Itani, Tuochao Chen, Takuya Yoshioka, Shyamnath Gollakota  
 _IEEE ICASSP 2023_    
 <a href="https://arxiv.org/abs/2211.02250" target="_blank">
-  <img src="https://img.shields.io/badge/paper-grey" alt="Paper">
+  <img src="https://img.shields.io/badge/Paper-grey" alt="Paper">
 </a> 
 <a href="https://waveformer.cs.washington.edu/" target="_blank">
-  <img src="https://img.shields.io/badge/website-grey" alt="Website">
+  <img src="https://img.shields.io/badge/Website-grey" alt="Website">
 </a> 
 <a href="https://github.com/vb000/Waveformer" target="_blank">
   <img src="https://img.shields.io/github/stars/vb000/Waveformer?style=social&label=Code" alt="GitHub">
@@ -89,10 +115,10 @@ __NeuriCam: Video Super Resolution and Colorization Using Key Frames__
 Bandhav Veluri, Ali Saffari, Collin Pernu, Joshua Smith, Michael Taylor, Shyamnath Gollakota  
 _MobiCom 2023_  
 <a href="https://arxiv.org/abs/2207.12496" target="_blank">
-  <img src="https://img.shields.io/badge/paper-grey" alt="Paper">
+  <img src="https://img.shields.io/badge/Paper-grey" alt="Paper">
 </a> 
 <a href="https://waveformer.cs.washington.edu/" target="_blank">
-  <img src="https://img.shields.io/badge/website-grey" alt="Website">
+  <img src="https://img.shields.io/badge/Website-grey" alt="Website">
 </a> 
 <a href="https://github.com/vb000/NeuriCam" target="_blank">
   <img src="https://img.shields.io/github/stars/vb000/NeuriCam?style=social&label=Code" alt="GitHub">
@@ -105,7 +131,7 @@ __A Tensor Processing Framework for CPU-Manycore Heterogeneous Systems__
 Lin Cheng, Peitian Pan, Zhongyuan Zhao, Krithik Ranjan, Jack Weber, Bandhav Veluri, Seyed Borna Ehsani, Max Ruttenberg, Dai Cheol Jung, Preslav Ivanov, Dustin Richmond, Michael B Taylor, Zhiru Zhang, Christopher Batten  
 _TCAD 2022_  
 <a href="https://ieeexplore.ieee.org/abstract/document/9509755" target="_blank">
-  <img src="https://img.shields.io/badge/paper-grey" alt="Paper">
+  <img src="https://img.shields.io/badge/Paper-grey" alt="Paper">
 </a> 
 <a href="https://github.com/cornell-brg/hb-pytorch" target="_blank">
   <img src="https://img.shields.io/github/stars/cornell-brg/hb-pytorch?style=social&label=Code" alt="GitHub">
