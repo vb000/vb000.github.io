@@ -81,7 +81,7 @@ analytics:
 # Site Author
 author:
   name             : "Bandhav Veluri"
-  avatar           : "profile.png"
+  avatar           : "profile.jpg"
   bio              : "PhD student at Paul G. Allen Center for Computer Science & Engineering"
   location         : "University of Washington"
   employer         :
@@ -115,6 +115,7 @@ author:
   xing             :
   youtube          :
   wikipedia        :
+  cv               : "files/CV.pdf"
 
 
 # Reading Files
