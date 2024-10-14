@@ -9,7 +9,7 @@ redirect_from:
 ---
 I'm a PhD student in Computer Science at the University of Washington. I work in the [Mobile Intelligence Lab](http://netlab.cs.washington.edu) advised by [Prof. Shyam Gollakota](https://homes.cs.washington.edu/~gshyam/) and [Prof. Michael Taylor](http://michaeltaylor.org/). I'm also working at [Meta AI](https://ai.meta.com/) as a visiting researcher. I'm interested in Speech/Audio Language Modeling, Conversational AI and Human-Computer Interaction. I got my Bachelor's degree at the Indian Institute of Technology Roorkee and my Master's degree at the University of Washington.
 
-<p style="margin: 20px 0;">
+<p style="margin: 20px 0; font-size: 0.9em;">
 ✨ I'm open to research roles in industry starting Spring or Summer 2025. If you have exciting opportunities, please reach out!
 </p>
 
