@@ -13,7 +13,28 @@ I'm a PhD student in Computer Science at the University of Washington. I work in
 ✨ Open to full-time research positions starting Spring/Summer 2025. ✨
 </p>
 
-## Recent Works
+## News
+<style>
+.boxhead a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+</style>
+
+<small>
+Sep 20, 2024 -- [SyncLLM](https://syncllm.cs.washington.edu/) accepted to EMNLP Main 2024!  
+</small>
+<small>
+May 23, 2024 -- _Look Once to Hear_ covered by [MIT Tech Review](https://www.technologyreview.com/2024/05/23/1092832/noise-canceling-headphones-use-ai-to-let-a-single-voice-through/)! P.S: Also in [U.S.News & World Report](https://www.usnews.com/news/health-news/articles/2024-05-28/ai-headphones-let-listeners-hear-just-one-voice-in-a-crowd), [GeekWire](https://www.geekwire.com/2024/look-and-listen-ai-headphones-cancel-background-noise-and-focus-on-one-speaker-after-a-glance/) and [UW News](https://www.washington.edu/news/2024/05/23/ai-headphones-noise-cancelling-target-speech-hearing/).  
+</small>
+<small>
+May 11, 2024 -- _Look Once to Hear_ received best paper honorable mention award at CHI 2024!  
+</small>
+<small>
+Nov 9, 2023  -- _Semantic Hearing_ covered by [MIT Tech Review](https://www.technologyreview.com/2023/11/09/1083145/noise-canceling-headphones-could-let-you-pick-and-choose-the-sounds-you-want-to-hear/) and [UW News](https://www.washington.edu/news/2023/11/09/ai-noise-canceling-headphones/)!
+</small>
+
+## Recent publications
 <style>
 .boxhead a {
     color: #FFFFFF;
@@ -133,17 +154,5 @@ _MobiCom 2023_
 </a>  
 </small>
 <video controls src="https://github.com/vb000/NeuriCam/assets/16723254/d3d2fc4a-2cfa-4f72-918e-c62379569d91" width=320 height=180></video>
-
-__A Tensor Processing Framework for CPU-Manycore Heterogeneous Systems__  
-<small>
-Lin Cheng, Peitian Pan, Zhongyuan Zhao, Krithik Ranjan, Jack Weber, Bandhav Veluri, Seyed Borna Ehsani, Max Ruttenberg, Dai Cheol Jung, Preslav Ivanov, Dustin Richmond, Michael B Taylor, Zhiru Zhang, Christopher Batten  
-_TCAD 2022_  
-<a href="https://ieeexplore.ieee.org/abstract/document/9509755" target="_blank">
-  <img src="https://img.shields.io/badge/Paper-grey" alt="Paper">
-</a> 
-<a href="https://github.com/cornell-brg/hb-pytorch" target="_blank">
-  <img src="https://img.shields.io/github/stars/cornell-brg/hb-pytorch?style=social&label=Code" alt="GitHub">
-</a>  
-</small>
 
 <small>(\*Co-primary authors)</small>
