@@ -25,10 +25,13 @@ I'm a PhD student in Computer Science at the University of Washington. I work in
 Sep 20, 2024 -- [SyncLLM](https://syncllm.cs.washington.edu/) accepted to EMNLP Main 2024!  
 </small>
 <small>
-May 23, 2024 -- _Look Once to Hear_ covered by [MIT Tech Review](https://www.technologyreview.com/2024/05/23/1092832/noise-canceling-headphones-use-ai-to-let-a-single-voice-through/)! P.S: Also in [U.S.News & World Report](https://www.usnews.com/news/health-news/articles/2024-05-28/ai-headphones-let-listeners-hear-just-one-voice-in-a-crowd), [GeekWire](https://www.geekwire.com/2024/look-and-listen-ai-headphones-cancel-background-noise-and-focus-on-one-speaker-after-a-glance/) and [UW News](https://www.washington.edu/news/2024/05/23/ai-headphones-noise-cancelling-target-speech-hearing/).  
+Jul 19, 2024 -- More than 500 stargazers at _Look Once to Hear_ [github repo](https://github.com/vb000/LookOnceToHear/tree/main) ⭐  
 </small>
 <small>
-May 11, 2024 -- _Look Once to Hear_ received best paper honorable mention award at CHI 2024!  
+May 23, 2024 -- _Look Once to Hear_ covered by [MIT Tech Review](https://www.technologyreview.com/2024/05/23/1092832/noise-canceling-headphones-use-ai-to-let-a-single-voice-through/)! P.S: Also in [U.S.News & World Report](https://www.usnews.com/news/health-news/articles/2024-05-28/ai-headphones-let-listeners-hear-just-one-voice-in-a-crowd), [GeekWire](https://www.geekwire.com/2024/look-and-listen-ai-headphones-cancel-background-noise-and-focus-on-one-speaker-after-a-glance/) [UW News](https://www.washington.edu/news/2024/05/23/ai-headphones-noise-cancelling-target-speech-hearing/) and a [shout-out from Jeff Dean](https://x.com/JeffDean/status/1794830291028398409) 😍  
+</small>
+<small>
+May 11, 2024 -- _Look Once to Hear_ received best paper honorable mention award at CHI 2024 🏆  
 </small>
 <small>
 Nov 9, 2023  -- _Semantic Hearing_ covered by [MIT Tech Review](https://www.technologyreview.com/2023/11/09/1083145/noise-canceling-headphones-could-let-you-pick-and-choose-the-sounds-you-want-to-hear/) and [UW News](https://www.washington.edu/news/2023/11/09/ai-noise-canceling-headphones/)!
