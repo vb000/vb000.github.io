@@ -86,7 +86,7 @@ author:
   location         : "University of Washington"
   employer         :
   pubmed           :
-  googlescholar    : "https://scholar.google.com/citations?user=H75ld_gAAAAJ&hl=en"
+  googlescholar    : "https://scholar.google.com/citations?hl=en&user=H75ld_gAAAAJ&view_op=list_works&sortby=pubdate"
   email            : "bandhav@cs.washington.edu"
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
