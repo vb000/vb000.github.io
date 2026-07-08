@@ -1,0 +1,8 @@
+[
+  {
+    "title": "LLM Systems",
+    "slug": "2026-07-03-gpu-profiling-precision",
+    "date": "2026-07-03",
+    "summary": "LLM-systems refresher: perf_counter timing, going deeper with Nsight, what the nsys trace showed, and why low precision drifts."
+  }
+]

@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bandhav Veluri</title>
+<meta name="description" content="Bandhav Veluri — Research Scientist at Sesame AI working on conversational AI.">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f7f8f9;
+    --ink: #17181d;
+    --muted: #5a5f66;
+    --faint: #8a9099;
+    --line: #e8eaed;
+    --accent: #3457d5;
+    --accent-weak: #eef1fd;
+    --award: #b7791f;
+    --radius: 12px;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", sans-serif;
+    --maxw: 42rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1114;
+      --surface: #16181c;
+      --ink: #e8e9ea;
+      --muted: #a0a4ab;
+      --faint: #6c7078;
+      --line: #24262b;
+      --accent: #8aa2ff;
+      --accent-weak: #1a1f31;
+      --award: #e0ac5a;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-size: 17px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 4.5rem 1.5rem 6rem; }
+
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 2px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+  /* ---------- header ---------- */
+  .hero { display: flex; align-items: center; gap: 1.15rem; margin-bottom: 1.4rem; }
+  .avatar {
+    width: 76px; height: 76px; border-radius: var(--radius); flex: none;
+    object-fit: cover; border: 1px solid var(--line);
+  }
+  .hero h1 { font-size: 1.7rem; font-weight: 700; letter-spacing: -.025em; margin: 0; }
+
+  .bio { font-size: 1.02rem; color: var(--ink); margin: 0 0 1rem; }
+  .bio a { font-weight: 500; }
+
+  .social { list-style: none; display: flex; flex-wrap: wrap; gap: .4rem; margin: 0; padding: 0; }
+  .social a {
+    display: inline-flex; align-items: center; gap: .34rem;
+    font-size: .8rem; color: var(--muted); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 999px; padding: .28rem .64rem;
+    transition: color .12s ease, border-color .12s ease, background .12s ease;
+  }
+  .social a:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-weak); text-decoration: none; }
+  .social svg { width: 14px; height: 14px; flex: none; fill: currentColor; }
+
+  /* ---------- sections ---------- */
+  section { margin-top: 3rem; }
+  .label {
+    font-size: .74rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--faint); margin: 0 0 1.1rem; padding-bottom: .55rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* ---------- news ---------- */
+  .news {
+    display: grid; gap: .7rem;
+    max-height: 14rem; overflow-y: auto;
+    padding: .95rem 1.1rem; border: 1px solid var(--line); border-radius: var(--radius);
+    scrollbar-width: thin; scrollbar-color: var(--line) transparent;
+  }
+  .news::-webkit-scrollbar { width: 8px; }
+  .news::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+  .news::-webkit-scrollbar-track { background: transparent; }
+  .news .item { display: grid; grid-template-columns: 4.8rem 1fr; gap: .9rem; align-items: baseline; }
+  .news .date {
+    font-family: var(--mono); font-size: .76rem; color: var(--faint);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .news .what { font-size: .95rem; }
+  .news .what i { font-style: italic; }
+
+  /* ---------- publications ---------- */
+  .pubs { display: grid; gap: 2.1rem; }
+  .pub .ptitle { font-size: 1.03rem; font-weight: 640; line-height: 1.35; margin: 0 0 .25rem; letter-spacing: -.005em; }
+  .pub .authors { font-size: .88rem; color: var(--muted); margin: 0 0 .2rem; }
+  .pub .authors .me { color: var(--ink); font-weight: 600; }
+  .pub .venue { font-size: .88rem; color: var(--muted); margin: 0 0 .6rem; }
+  .pub .venue em { font-style: italic; }
+  .pub .award { color: var(--award); font-weight: 600; white-space: nowrap; }
+
+  .links { display: flex; flex-wrap: wrap; gap: .45rem; margin: 0 0 .85rem; }
+  .links a {
+    font-size: .78rem; color: var(--muted); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 999px; padding: .2rem .7rem;
+    transition: color .12s ease, border-color .12s ease, background .12s ease;
+  }
+  .links a:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-weak); text-decoration: none; }
+
+  .media { margin-top: .2rem; }
+  .media video { display: block; width: 100%; max-width: 21rem; height: auto; border-radius: 10px; border: 1px solid var(--line); background: #000; }
+  .embed {
+    position: relative; width: 100%; max-width: 21rem; aspect-ratio: 16 / 9;
+    border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: #000;
+  }
+  .embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+  .footnote { font-size: .82rem; color: var(--faint); margin-top: 2.2rem; }
+
+  footer {
+    margin-top: 4.5rem; padding-top: 1.3rem; border-top: 1px solid var(--line);
+    font-size: .78rem; color: var(--faint);
+  }
+
+  @media (max-width: 34rem) {
+    body { font-size: 16px; }
+    .wrap { padding: 3rem 1.15rem 4.5rem; }
+    .hero { gap: .9rem; }
+    .avatar { width: 64px; height: 64px; }
+    .news .item { grid-template-columns: 1fr; gap: .1rem; }
+    .news .date { font-size: .72rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="hero">
+      <img class="avatar" src="/images/profile.png" alt="Bandhav Veluri" width="76" height="76">
+      <h1>Bandhav Veluri</h1>
+    </div>
+
+    <p class="bio">I'm a Research Scientist at <a href="https://www.sesame.com/">Sesame AI</a>
+          working on conversational AI. Previously, I spent a couple of years at
+          <a href="https://ai.meta.com/">Meta Superintelligence Labs</a> where I worked on one of the
+          first <a href="https://syncllm.cs.washington.edu/">full-duplex spoken language models</a>
+          based on auto-regressive LLMs. I graduated with a PhD in Computer Science at the University of
+          Washington advised by <a href="https://homes.cs.washington.edu/~gshyam/">Prof. Shyam Gollakota</a>
+          and <a href="http://michaeltaylor.org/">Prof. Michael Taylor</a>. I completed my Bachelor's
+          degree at the Indian Institute of Technology Roorkee.</p>
+
+        <ul class="social">
+          <li><a href="mailto:bandhav@cs.washington.edu">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>Email</a></li>
+          <li><a href="https://scholar.google.com/citations?hl=en&amp;user=H75ld_gAAAAJ&amp;view_op=list_works&amp;sortby=pubdate">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>Scholar</a></li>
+          <li><a href="https://github.com/vb000">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub</a></li>
+          <li><a href="https://twitter.com/b_veluri">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>X</a></li>
+          <li><a href="/files/Resume.pdf">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 2c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6H6zm7 1.5L18.5 9H13V3.5zM8 12h8v1.5H8V12zm0 3h8v1.5H8V15zm0 3h5v1.5H8V18z"/></svg>CV</a></li>
+    </ul>
+  </header>
+
+  <!-- NEWS -->
+  <section>
+    <p class="label">News</p>
+    <div class="news">
+      <div class="item"><span class="date">Apr 2026</span><span class="what"><a href="https://arxiv.org/abs/2511.11124"><i>AV-Dialog</i></a> accepted to ACL 2026!</span></div>
+      <div class="item"><span class="date">Sep 2025</span><span class="what">Started as research scientist at Sesame!</span></div>
+      <div class="item"><span class="date">Nov 2024</span><span class="what">Presented <i>SyncLLM</i> at EMNLP Main 2024!</span></div>
+      <div class="item"><span class="date">Jul 2024</span><span class="what">More than 500 stargazers at <i>Look Once to Hear</i> <a href="https://github.com/vb000/LookOnceToHear/tree/main">github repo</a> ⭐</span></div>
+      <div class="item"><span class="date">May 2024</span><span class="what"><i>Look Once to Hear</i> covered by <a href="https://www.technologyreview.com/2024/05/23/1092832/noise-canceling-headphones-use-ai-to-let-a-single-voice-through/">MIT Tech Review</a>! P.S: Also in <a href="https://www.usnews.com/news/health-news/articles/2024-05-28/ai-headphones-let-listeners-hear-just-one-voice-in-a-crowd">U.S. News &amp; World Report</a>, <a href="https://www.geekwire.com/2024/05/23/1092832/look-and-listen-ai-headphones-cancel-background-noise-and-focus-on-one-speaker-after-a-glance/">GeekWire</a>, <a href="https://www.washington.edu/news/2024/05/23/ai-headphones-noise-cancelling-target-speech-hearing/">UW News</a> and a <a href="https://x.com/JeffDean/status/1794830291028398409">shout-out from Jeff Dean</a> 😍</span></div>
+      <div class="item"><span class="date">May 2024</span><span class="what"><i>Look Once to Hear</i> received best paper honorable mention award at CHI 2024 🏆</span></div>
+      <div class="item"><span class="date">Nov 2023</span><span class="what"><i>Semantic Hearing</i> covered by <a href="https://www.technologyreview.com/2023/11/09/1083145/noise-canceling-headphones-could-let-you-pick-and-choose-the-sounds-you-want-to-hear/">MIT Tech Review</a> and <a href="https://www.washington.edu/news/2023/11/09/ai-noise-canceling-headphones/">UW News</a>!</span></div>
+    </div>
+  </section>
+
+  <!-- PUBLICATIONS -->
+  <section>
+    <p class="label">Selected Publications</p>
+    <div class="pubs">
+
+      <div class="pub">
+        <p class="ptitle">Beyond Turn-Based Interfaces: Synchronous LLMs as Full-Duplex Dialogue Agents</p>
+        <p class="authors"><span class="me">Bandhav Veluri</span>, Benjamin N Peloquin, Bokai Yu, Hongyu Gong, Shyamnath Gollakota</p>
+        <p class="venue"><em>EMNLP Main 2024</em></p>
+        <div class="links">
+          <a href="https://arxiv.org/abs/2409.15594">Paper</a>
+          <a href="https://syncllm.cs.washington.edu/">Website</a>
+        </div>
+        <div class="media">
+          <video controls preload="none" poster="/assets/syncllm_thumb.png">
+            <source src="https://syncllm.cs.washington.edu/SyncLLM.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+
+      <div class="pub">
+        <p class="ptitle">IRIS: Wireless Ring for Vision-based Smart Home Interaction</p>
+        <p class="authors">Maruchi Kim*, Antonio Glenn*, <span class="me">Bandhav Veluri</span>*, Yunseo Lee, Eyoel Gebre, Aditya Bagaria, Shwetak Patel, Shyamnath Gollakota</p>
+        <p class="venue"><em>ACM UIST 2024</em></p>
+        <div class="links">
+          <a href="https://arxiv.org/abs/2407.18141">Paper</a>
+        </div>
+        <div class="media">
+          <div class="embed"><iframe src="https://www.youtube.com/embed/OGPSiZtvnaI" title="IRIS" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+        </div>
+      </div>
+
+      <div class="pub">
+        <p class="ptitle">Look Once to Hear: Target Speech Hearing with Noisy Examples</p>
+        <p class="authors"><span class="me">Bandhav Veluri</span>*, Malek Itani*, Tuochao Chen, Takuya Yoshioka, Shyamnath Gollakota</p>
+        <p class="venue"><em>ACM CHI 2024</em> &nbsp;<span class="award">🏆 Best paper honorable mention</span></p>
+        <div class="links">
+          <a href="https://arxiv.org/abs/2405.06289">Paper</a>
+          <a href="https://tsh.cs.washington.edu/">Website</a>
+          <a href="https://github.com/vb000/LookOnceToHear">Code</a>
+        </div>
+        <div class="media">
+          <div class="embed"><iframe src="https://www.youtube.com/embed/V-XCfnjfQmM" title="Look Once to Hear" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+        </div>
+      </div>
+
+      <div class="pub">
+        <p class="ptitle">Semantic Hearing: Programming Acoustic Scenes with Binaural Hearables</p>
+        <p class="authors"><span class="me">Bandhav Veluri</span>*, Malek Itani*, Justin Chan, Takuya Yoshioka, Shyamnath Gollakota</p>
+        <p class="venue"><em>ACM UIST 2023</em></p>
+        <div class="links">
+          <a href="https://arxiv.org/abs/2311.00320">Paper</a>
+          <a href="https://semantichearing.cs.washington.edu/">Website</a>
+          <a href="https://github.com/vb000/SemanticHearing">Code</a>
+        </div>
+        <div class="media">
+          <div class="embed"><iframe src="https://www.youtube.com/embed/xx3qocTmAK8" title="Semantic Hearing" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+        </div>
+      </div>
+
+      <div class="pub">
+        <p class="ptitle">Real-Time Target Sound Extraction</p>
+        <p class="authors"><span class="me">Bandhav Veluri</span>, Justin Chan, Malek Itani, Tuochao Chen, Takuya Yoshioka, Shyamnath Gollakota</p>
+        <p class="venue"><em>IEEE ICASSP 2023</em></p>
+        <div class="links">
+          <a href="https://arxiv.org/abs/2211.02250">Paper</a>
+          <a href="https://waveformer.cs.washington.edu/">Website</a>
+          <a href="https://github.com/vb000/Waveformer">Code</a>
+        </div>
+        <div class="media">
+          <video controls preload="none" src="https://targetsound.cs.washington.edu/files/Gradio-Demo.mp4"></video>
+        </div>
+      </div>
+
+      <div class="pub">
+        <p class="ptitle">NeuriCam: Video Super Resolution and Colorization Using Key Frames</p>
+        <p class="authors"><span class="me">Bandhav Veluri</span>, Ali Saffari, Collin Pernu, Joshua Smith, Michael Taylor, Shyamnath Gollakota</p>
+        <p class="venue"><em>MobiCom 2023</em></p>
+        <div class="links">
+          <a href="https://arxiv.org/abs/2207.12496">Paper</a>
+          <a href="https://waveformer.cs.washington.edu/">Website</a>
+          <a href="https://github.com/vb000/NeuriCam">Code</a>
+        </div>
+        <div class="media">
+          <video controls preload="none" src="https://github.com/vb000/NeuriCam/assets/16723254/d3d2fc4a-2cfa-4f72-918e-c62379569d91"></video>
+        </div>
+      </div>
+
+    </div>
+    <p class="footnote">* Co-primary authors</p>
+  </section>
+
+  <footer>© Bandhav Veluri</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>LLM Systems — notes</title>
+  <style>
+    :root {
+      --bg: #fbfbfa;
+      --fg: #1a1a1a;
+      --muted: #6b6b6b;
+      --faint: #8f8f8f;
+      --card: #ffffff;
+      --border: #e7e7e7;
+      --rule: #ededed;
+      --accent: #2a7ae2;
+      --code-bg: #f5f6f7;
+      --code-fg: #223;
+      --kw: #a6248a;      /* keyword   */
+      --fn: #2a7ae2;      /* function  */
+      --str: #367d39;     /* string    */
+      --com: #9aa0a6;     /* comment   */
+      /* kernel categories — functional, not decorative */
+      --k-gemm: #3d7ff2;
+      --k-gemm2: #7aa8ff;
+      --k-elem: #e08a2b;
+      --k-soft: #d4483b;
+      --k-rest: #c9ccd1;
+      /* memory buckets */
+      --m-param: #3d7ff2;
+      --m-optim: #8b5cf0;
+      --m-act: #e08a2b;
+      --m-grad: #2f9e6b;
+      --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      --shadow: 0 1px 2px rgba(0,0,0,.04), 0 6px 20px rgba(0,0,0,.05);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121317;
+        --fg: #e9e9ea;
+        --muted: #9a9aa2;
+        --faint: #74747c;
+        --card: #1b1c20;
+        --border: #2a2b31;
+        --rule: #26272c;
+        --accent: #6ea8fe;
+        --code-bg: #16171b;
+        --code-fg: #d7d9dd;
+        --kw: #e08ad0;
+        --fn: #6ea8fe;
+        --str: #7fc98a;
+        --com: #6b7076;
+        --k-gemm: #5b93ff;
+        --k-gemm2: #3a5fb0;
+        --k-elem: #e8a04d;
+        --k-soft: #e2604f;
+        --k-rest: #3a3b42;
+        --m-param: #5b93ff;
+        --m-optim: #9b8cf5;
+        --m-act: #e8a04d;
+        --m-grad: #35c39a;
+        --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 26px rgba(0,0,0,.35);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.65; -webkit-font-smoothing: antialiased;
+    }
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    }
+    .wrap { max-width: 44rem; margin: 0 auto; padding: 3.5rem 1.25rem 6rem; }
+
+    a { color: var(--accent); }
+    .back {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .82rem; color: var(--muted); text-decoration: none;
+    }
+    .back:hover { color: var(--accent); }
+
+    header { margin: 1.4rem 0 2.6rem; }
+    .eyebrow {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .72rem; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--faint); margin: 0 0 .7rem;
+    }
+    h1 {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 1.85rem; font-weight: 600; letter-spacing: -.02em;
+      line-height: 1.15; margin: 0 0 .5rem;
+    }
+    .lede { color: var(--muted); margin: 0; font-size: 1.02rem; }
+
+    section { margin: 2.9rem 0; }
+    h2 {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 1.02rem; font-weight: 600; letter-spacing: -.01em;
+      margin: 0 0 .9rem; padding-bottom: .5rem;
+      border-bottom: 1px solid var(--rule);
+      display: flex; align-items: baseline; gap: .6rem;
+    }
+    h2 .n {
+      color: var(--faint); font-size: .8rem; font-weight: 500;
+      font-variant-numeric: tabular-nums;
+    }
+    h3 { font-size: .96rem; font-weight: 650; margin: 1.5rem 0 .4rem; }
+    p { margin: .7rem 0; }
+    strong { font-weight: 650; }
+
+    /* code blocks */
+    pre {
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: .95rem 1.1rem; margin: 1rem 0;
+      overflow-x: auto; font-size: .83rem; line-height: 1.55;
+      color: var(--code-fg);
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    }
+    pre .kw { color: var(--kw); }
+    pre .fn { color: var(--fn); }
+    pre .str { color: var(--str); }
+    pre .com { color: var(--com); font-style: italic; }
+    code:not(pre code) {
+      background: var(--code-bg); border: 1px solid var(--border);
+      padding: .08em .38em; border-radius: 5px; font-size: .84em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    /* pipeline timeline (benchmark section signature-lite) */
+    .timeline {
+      display: flex; gap: 2px; margin: 1.1rem 0 .3rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .7rem;
+    }
+    .timeline .seg {
+      padding: .4rem .3rem; text-align: center; color: #fff;
+      border-radius: 4px; white-space: nowrap;
+    }
+    .seg.warm { flex: 2; background: var(--k-rest); color: var(--fg); }
+    .seg.sync { flex: .8; background: var(--k-soft); }
+    .seg.meas { flex: 5; background: var(--k-gemm); }
+    .cap { font-size: .78rem; color: var(--faint); margin: .2rem 0 0; }
+
+    /* kernel budget bars — the signature element */
+    .budget { margin: 1.2rem 0 .4rem; }
+    .budget .row {
+      display: grid; grid-template-columns: 5.5rem 1fr; align-items: center;
+      gap: .8rem; margin: .55rem 0;
+    }
+    .budget .lbl {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .78rem; color: var(--muted); text-align: right;
+    }
+    .bar {
+      display: flex; height: 1.7rem; border-radius: 6px; overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .bar span {
+      display: flex; align-items: center; justify-content: center;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .66rem; color: #fff; overflow: hidden; white-space: nowrap;
+    }
+    .legend {
+      display: flex; flex-wrap: wrap; gap: .3rem 1.1rem; margin-top: .9rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .72rem; color: var(--muted);
+    }
+    .legend i { display: inline-block; width: .7rem; height: .7rem; border-radius: 2px; margin-right: .35rem; vertical-align: middle; }
+
+    /* tables */
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .86rem; }
+    th, td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid var(--rule); }
+    th {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .72rem; letter-spacing: .04em; text-transform: uppercase;
+      color: var(--faint); font-weight: 600;
+    }
+    td.num { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-variant-numeric: tabular-nums; }
+    tr.good td.num { color: var(--str); }
+    tr.bad td.num { color: var(--k-soft); font-weight: 650; }
+
+    .callout {
+      background: var(--card); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px; padding: .85rem 1.1rem; margin: 1.2rem 0;
+      box-shadow: var(--shadow); font-size: .93rem;
+    }
+    .callout .tag {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--accent); display: block; margin-bottom: .3rem;
+    }
+    ul { padding-left: 1.15rem; margin: .6rem 0; }
+    li { margin: .35rem 0; }
+    li code { white-space: nowrap; }
+    footer {
+      margin-top: 4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule);
+      color: var(--faint); font-size: .8rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    /* ── memory walkthrough (section 05) ───────────────────────── */
+    .mem-buckets { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: .7rem; margin: 1.1rem 0; }
+    .mem-bcard { background: var(--card); border: 1px solid var(--border); border-top: 3px solid var(--bc); border-radius: 10px; padding: .8rem .9rem; box-shadow: var(--shadow); }
+    .mem-bcard .bn { font-family: var(--mono); font-weight: 650; font-size: .9rem; color: var(--bc); }
+    .mem-bcard .bt { font-family: var(--mono); font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); display: block; margin: .1rem 0 .4rem; }
+    .mem-bcard p { margin: 0; font-size: .83rem; color: var(--muted); }
+
+    .mem-net { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.1rem 1.2rem; display: flex; flex-wrap: wrap; gap: 1.2rem; align-items: center; justify-content: space-between; box-shadow: var(--shadow); margin: 1.1rem 0; }
+    .mem-net svg { width: 100%; max-width: 22rem; height: auto; }
+    .mem-net .nn { fill: var(--code-bg); stroke: var(--border); stroke-width: 1.5; }
+    .mem-net .ne { stroke: var(--faint); stroke-width: 1; opacity: .5; }
+    .mem-net .nl { fill: var(--muted); font-family: var(--mono); font-size: 11px; }
+    .mem-net .nt { fill: var(--fg); font-family: var(--mono); font-size: 12px; }
+    .mem-ptab { font-family: var(--mono); font-size: .82rem; border-collapse: collapse; }
+    .mem-ptab td { padding: .24rem .7rem .24rem 0; border-bottom: 1px solid var(--rule); }
+    .mem-ptab td:last-child { text-align: right; color: var(--m-param); font-variant-numeric: tabular-nums; }
+    .mem-ptab tr.t td { border-bottom: none; font-weight: 650; color: var(--fg); padding-top: .45rem; }
+    .mem-ptab tr.t td:last-child { color: var(--fg); }
+
+    .mem-stage { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); margin: 1.2rem 0; }
+    .mem-ctl { display: flex; align-items: center; gap: .7rem; padding: .9rem 1rem; border-bottom: 1px solid var(--rule); flex-wrap: wrap; }
+    .mem-btn { font-family: var(--mono); font-size: .8rem; color: var(--fg); background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; padding: .45rem .85rem; cursor: pointer; transition: border-color .15s; }
+    .mem-btn:hover { border-color: var(--accent); }
+    .mem-btn:disabled { opacity: .35; cursor: not-allowed; }
+    .mem-btn:focus-visible, .mem-tick:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .mem-pc { font-family: var(--mono); font-size: .75rem; color: var(--muted); margin-left: auto; }
+    .mem-track { display: flex; gap: 4px; padding: 0 1rem .9rem; }
+    .mem-tick { flex: 1; height: 6px; border-radius: 3px; background: var(--rule); border: none; cursor: pointer; padding: 0; transition: background .15s; }
+    .mem-tick.done { background: var(--faint); }
+    .mem-tick.active { background: var(--accent); }
+
+    .mem-body { display: grid; grid-template-columns: 1.1fr 1fr; }
+    .mem-read { padding: 1.1rem 1.2rem; border-right: 1px solid var(--rule); }
+    .mem-k { font-family: var(--mono); font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+    .mem-name { font-family: var(--mono); font-size: 1.05rem; font-weight: 650; margin: .15rem 0 .6rem; }
+    .mem-desc { font-size: .88rem; color: var(--muted); min-height: 6.5em; margin: 0; }
+    .mem-chips { margin-top: .9rem; display: flex; flex-direction: column; gap: .5rem; }
+    .mem-crow { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; min-height: 1.8rem; }
+    .mem-crow .rk { font-family: var(--mono); font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); width: 5rem; flex: none; }
+    .mem-chip { font-family: var(--mono); font-size: .72rem; padding: .16rem .45rem; border-radius: 6px; border: 1px solid var(--border); background: transparent; }
+    .mem-chip.act { color: var(--m-act); border-color: color-mix(in srgb, var(--m-act) 45%, transparent); background: color-mix(in srgb, var(--m-act) 12%, transparent); }
+    .mem-chip.grad { color: var(--m-grad); border-color: color-mix(in srgb, var(--m-grad) 45%, transparent); background: color-mix(in srgb, var(--m-grad) 12%, transparent); }
+    .mem-chip.none { color: var(--faint); }
+
+    .mem-meter { padding: 1.1rem 1.2rem; display: flex; gap: 1rem; }
+    .mem-col { width: 4.2rem; flex: none; height: 260px; background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px; position: relative; display: flex; flex-direction: column-reverse; overflow: hidden; }
+    .mem-seg { width: 100%; transition: height .35s ease; }
+    .mem-seg.param { background: var(--m-param); }
+    .mem-seg.optim { background: var(--m-optim); }
+    .mem-seg.act { background: var(--m-act); }
+    .mem-seg.grad { background: var(--m-grad); }
+    .mem-peak { position: absolute; left: 0; right: 0; border-top: 1.5px dashed var(--accent); pointer-events: none; }
+    .mem-peak span { position: absolute; right: 2px; top: -1rem; font-family: var(--mono); font-size: .58rem; color: var(--accent); }
+    .mem-side { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .mem-tot { font-family: var(--mono); }
+    .mem-tot .big { font-size: 1.9rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+    .mem-tot .u { font-size: .78rem; color: var(--muted); }
+    .mem-tot .by { font-size: .68rem; color: var(--faint); display: block; margin-top: .1rem; }
+    .mem-bd { display: flex; flex-direction: column; gap: .3rem; margin-top: .8rem; }
+    .mem-br { display: grid; grid-template-columns: 1fr auto; font-family: var(--mono); font-size: .74rem; }
+    .mem-br .d { display: inline-block; width: .6rem; height: .6rem; border-radius: 2px; margin-right: .4rem; vertical-align: middle; }
+    .mem-br .l { color: var(--muted); }
+    .mem-br .v { color: var(--fg); font-variant-numeric: tabular-nums; }
+    .mem-canvas { width: 100%; height: 80px; display: block; margin-top: auto; }
+    .mem-cax { font-family: var(--mono); font-size: .6rem; color: var(--faint); display: flex; justify-content: space-between; margin-top: .2rem; }
+    @media (max-width: 640px) {
+      .mem-body { grid-template-columns: 1fr; }
+      .mem-read { border-right: none; border-bottom: 1px solid var(--rule); }
+    }
+    @media (prefers-reduced-motion: reduce) { .mem-seg { transition: none; } }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p><a class="back" href="../">&larr; all notes</a></p>
+    <header>
+      <p class="eyebrow">living notes</p>
+      <h1>LLM Systems</h1>
+      <p class="lede">A running set of notes on making transformer training fast and
+        numerically stable — profiling, kernels, mixed precision. Reload as needed.</p>
+    </header>
+
+    <!-- 1. WALL-CLOCK -->
+    <section>
+      <h2><span class="n">01</span> Wall-clock with <code>perf_counter</code></h2>
+      <p>The whole harness is three ideas: <strong>warm up</strong>, then bracket the
+        timed loop with <strong>two</strong> <code>cuda.synchronize()</code> calls.
+        CUDA kernel launches are async — without the syncs you'd time the launch
+        <em>queue</em>, not the work.</p>
+<pre><span class="kw">import</span> time, torch
+
+<span class="kw">def</span> <span class="fn">benchmark</span>(fn, *, warmup=<span class="str">5</span>, iters=<span class="str">20</span>):
+    <span class="kw">for</span> _ <span class="kw">in</span> range(warmup):      <span class="com"># kernel autotune, caches, lazy init</span>
+        fn()
+    torch.cuda.<span class="fn">synchronize</span>()     <span class="com"># drain warmup before starting clock</span>
+    t0 = time.<span class="fn">perf_counter</span>()
+    <span class="kw">for</span> _ <span class="kw">in</span> range(iters):
+        fn()
+    torch.cuda.<span class="fn">synchronize</span>()     <span class="com"># wait for GPU, THEN stop clock</span>
+    <span class="kw">return</span> (time.<span class="fn">perf_counter</span>() - t0) / iters</pre>
+
+      <div class="timeline" aria-hidden="true">
+        <div class="seg warm">warmup ×5</div>
+        <div class="seg sync">sync</div>
+        <div class="seg meas">measure ×20 → sync → stop</div>
+      </div>
+      <p class="cap">Only the shaded span is timed. The trailing sync is the one people forget.</p>
+
+      <div class="callout">
+        <span class="tag">why perf_counter</span>
+        Monotonic, highest-resolution clock available; unaffected by wall-clock
+        adjustments. Use <code>time.time()</code> and you invite NTP jumps into your
+        measurement.
+      </div>
+    </section>
+
+    <!-- 2. GOING DEEPER -->
+    <section>
+      <h2><span class="n">02</span> Going deeper with Nsight</h2>
+      <p><code>perf_counter</code> gives you <em>one number</em>. When you need to know
+        <em>which kernel</em> and <em>why</em>, climb the tool ladder:</p>
+      <ul>
+        <li><strong>Annotate with NVTX</strong> — wrap regions in
+          <code>torch.cuda.nvtx.range()</code> (or <code>nvtx.annotate</code>) so the
+          timeline is labelled <code>forward</code> / <code>backward</code> / <code>attn</code>
+          instead of a wall of anonymous kernels.</li>
+        <li><strong>nsys</strong> (Nsight Systems) — the <em>system timeline</em>:
+          CPU↔GPU overlap, launch gaps, and the <em>CUDA GPU Kernel Summary</em>. Scope
+          that summary to one NVTX range to answer "top kernel in the forward pass."</li>
+        <li><strong>ncu</strong> (Nsight Compute) — one kernel, deeply: achieved
+          occupancy, memory vs. compute throughput, and the <em>roofline</em> that tells
+          you whether a kernel is memory-bound or compute-bound.</li>
+      </ul>
+      <div class="callout">
+        <span class="tag">the ladder</span>
+        <code>perf_counter</code> → <em>is it slow?</em> · nsys → <em>what's slow &amp;
+        where's the bubble?</em> · ncu → <em>why is this one kernel slow?</em>
+      </div>
+    </section>
+
+    <!-- 3. OBSERVATIONS (signature) -->
+    <section>
+      <h2><span class="n">03</span> What the trace said <span class="n">· profiled run</span></h2>
+      <p>Forward pass ≈ <strong>126.5&nbsp;ms</strong> (matched stdlib timing). Kernel
+        time is dominated by <strong>GEMMs</strong>, but the split shifts between passes:</p>
+
+      <div class="budget">
+        <div class="row">
+          <span class="lbl">forward</span>
+          <div class="bar">
+            <span style="width:36.9%;background:var(--k-gemm)" title="sm80_xmma_gemm f32 — 36.9%">gemm 36.9%</span>
+            <span style="width:8.4%;background:var(--k-elem)" title="vectorized elementwise — 8.4%">vec 8.4%</span>
+            <span style="width:9.9%;background:var(--k-soft)" title="elementwise — 9.9%">elem 9.9%</span>
+            <span style="width:44.8%;background:var(--k-rest);color:var(--fg)">rest</span>
+          </div>
+        </div>
+        <div class="row">
+          <span class="lbl">bwd / full</span>
+          <div class="bar">
+            <span style="width:21.6%;background:var(--k-gemm2)" title="cutlass sgemm nt (backward) — 21.6%">cutlass nt 21.6%</span>
+            <span style="width:21%;background:var(--k-elem)" title="vectorized elementwise grows to 21%">vec-elem 21%</span>
+            <span style="width:57.4%;background:var(--k-rest);color:var(--fg)">rest</span>
+          </div>
+        </div>
+      </div>
+      <div class="legend" aria-hidden="true">
+        <span><i style="background:var(--k-gemm)"></i>fwd GEMM (sm80_xmma f32)</span>
+        <span><i style="background:var(--k-gemm2)"></i>bwd GEMM (cutlass sgemm nt)</span>
+        <span><i style="background:var(--k-elem)"></i>vectorized elementwise</span>
+        <span><i style="background:var(--k-soft)"></i>elementwise</span>
+      </div>
+
+      <ul>
+        <li><strong>Forward bottleneck:</strong> <code>sm80_xmma_gemm_f32f32_f32f32</code>
+          at 36.9% — the projection/FFN matmuls.</li>
+        <li><strong>Backward bottleneck:</strong>
+          <code>cutlass…sgemm_128x128_nt_align1</code> at 21.6%. Different kernel because
+          backward does ~2 matmuls per linear with <em>transposed</em> operands
+          (<code>nt</code>) → a different GEMM is selected.</li>
+        <li><strong>Elementwise grows</strong> from ~8–11% (forward) toward <strong>21%</strong>
+          across a full step — all the adds, scales, activation, and gradient plumbing
+          that backward adds on top.</li>
+      </ul>
+
+      <h3>The softmax paradox</h3>
+      <p>Softmax runs in roughly <strong>half</strong> the time of <code>attn_scores</code>
+        (Q·Kᵀ) or <code>attn_mm</code> (P·V) — yet it does a tiny fraction of their FLOPs:</p>
+      <table>
+        <thead><tr><th>op</th><th>FLOPs</th><th>relative</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">attn_scores</td><td class="mono">2·B·H·S²·d</td><td>compute-bound</td></tr>
+          <tr><td class="mono">attn_mm</td><td class="mono">2·B·H·S²·d</td><td>compute-bound</td></tr>
+          <tr><td class="mono">softmax</td><td class="mono">≈ c·B·H·S² &nbsp;(no <em>d</em>)</td><td>memory-bound</td></tr>
+        </tbody>
+      </table>
+      <p>Softmax has <strong>no <code>d</code> factor</strong> — for <code>d</code> in the
+        hundreds it's ~1% of the matmul FLOPs. That it costs <em>half</em> as much runtime
+        means it's <strong>bandwidth-bound</strong>: it reads and writes the whole
+        <code>S×S</code> score matrix from HBM with almost no arithmetic to hide the
+        latency. This is precisely the motivation for <strong>FlashAttention</strong> —
+        fuse the passes so the <code>S×S</code> matrix never touches HBM.</p>
+    </section>
+
+    <!-- 4. MIXED PRECISION & AUTOCAST -->
+    <section>
+      <h2><span class="n">04</span> Mixed precision &amp; autocast</h2>
+      <h3>Why the accumulator must stay fp32</h3>
+      <p>Sum <code>0.01</code> a thousand times — true answer <code>10.0</code>. What the
+        accumulator's dtype does to the result:</p>
+      <table>
+        <thead><tr><th>accumulator</th><th>addend</th><th>result</th></tr></thead>
+        <tbody>
+          <tr class="good"><td>fp32</td><td>fp32</td><td class="num">10.0001</td></tr>
+          <tr class="bad"><td>fp16</td><td>fp16</td><td class="num">9.9531</td></tr>
+          <tr class="good"><td>fp32</td><td>fp16 (implicit)</td><td class="num">10.0021</td></tr>
+          <tr class="good"><td>fp32</td><td>fp16 (explicit)</td><td class="num">10.0021</td></tr>
+        </tbody>
+      </table>
+      <ul>
+        <li><strong>All fp16 → 9.95, off by ~0.5%.</strong> Near a sum of ~8, fp16's
+          spacing is ~<code>0.0078</code>; the addend <code>0.01</code> barely clears it,
+          so each add rounds away most of its low bits — <em>swamping</em>. Grow the sum a
+          bit more and adds vanish entirely.</li>
+        <li><strong>fp32 accumulator fixes it</strong> — no swamping. The small residual
+          (<code>10.0021</code>) is just the fp16-rounded <code>0.01</code>
+          (<code>≈0.010002</code>) ×1000, a <em>biased</em> error.</li>
+        <li><strong>Implicit == explicit.</strong> <code>s += fp16_tensor</code> already
+          promotes the operand to the accumulator's dtype; the manual <code>.type()</code>
+          is redundant (but documents intent).</li>
+      </ul>
+      <div class="callout">
+        <span class="tag">the rule &amp; autocast</span>
+        Keep the <strong>accumulator</strong> in fp32 (master weights, optimizer moments,
+        loss/softmax reductions) even when the <strong>operands</strong> are low precision.
+        That's exactly what <code>torch.autocast</code> encodes: matmuls drop to fp16/bf16
+        for tensor-core speed, while <code>softmax</code> / <code>layer_norm</code> / loss
+        stay fp32. Params stay fp32 in storage — autocast casts operands, not storage.
+        <code>bf16</code> trades mantissa for exponent range, so it avoids the catastrophic
+        swamping without a <code>GradScaler</code>.
+      </div>
+
+      <h3>autocast, in practice</h3>
+      <p>You don't cast tensors by hand. Wrap the <strong>forward + loss</strong> in
+        <code>torch.autocast</code>; it applies the per-op policy on the fly. Weights,
+        gradients, and the optimizer stay fp32 — only the ops inside the block change dtype.</p>
+<pre><span class="com"># only the forward + loss go inside the context</span>
+<span class="kw">with</span> torch.<span class="fn">autocast</span>(device_type=<span class="str">"cuda"</span>, dtype=torch.bfloat16):
+    logits = <span class="fn">model</span>(x)          <span class="com"># matmuls → bf16 (tensor cores)</span>
+    loss   = <span class="fn">loss_fn</span>(logits, y)  <span class="com"># softmax / loss kept in fp32</span>
+
+loss.<span class="fn">backward</span>()                 <span class="com"># grads flow in the dtypes recorded above</span>
+optimizer.<span class="fn">step</span>()                 <span class="com"># fp32 master weights updated</span>
+optimizer.<span class="fn">zero_grad</span>()</pre>
+      <p>Two gotchas worth remembering: <strong>don't</strong> wrap <code>backward()</code>
+        (it replays the recorded dtypes), and for <code>dtype=torch.float16</code> you also
+        need a <code>GradScaler</code> to stop small grads underflowing — <code>bfloat16</code>
+        skips the scaler thanks to its wider exponent range.</p>
+
+      <h3>Concrete: bf16 vs fp32 (per-step, ms)</h3>
+      <p>Same training step, <code>--dtype bfloat16</code> against the fp32 default. The
+        compute-heavy passes get faster; the speedup <strong>grows with model size</strong>,
+        and the optimizer step barely moves:</p>
+      <table>
+        <thead><tr><th>model</th><th>pass</th><th>fp32</th><th>bf16</th><th>speedup</th></tr></thead>
+        <tbody>
+          <tr><td>small</td><td>forward</td><td class="num">20.33</td><td class="num">14.12</td><td class="num">1.44×</td></tr>
+          <tr><td>small</td><td>backward</td><td class="num">42.51</td><td class="num">26.22</td><td class="num">1.62×</td></tr>
+          <tr><td>medium</td><td>forward</td><td class="num">55.33</td><td class="num">28.39</td><td class="num">1.95×</td></tr>
+          <tr><td>medium</td><td>backward</td><td class="num">115.28</td><td class="num">51.98</td><td class="num">2.22×</td></tr>
+          <tr class="good"><td>large</td><td>forward</td><td class="num">123.47</td><td class="num">46.85</td><td class="num">2.64×</td></tr>
+          <tr class="good"><td>large</td><td>backward</td><td class="num">263.76</td><td class="num">98.55</td><td class="num">2.68×</td></tr>
+          <tr class="bad"><td>large</td><td>optimizer</td><td class="num">54.06</td><td class="num">53.82</td><td class="num">1.00×</td></tr>
+        </tbody>
+      </table>
+      <ul>
+        <li><strong>Speedup scales with size</strong> (1.44× → 2.64× on forward): bigger
+          matmuls are more compute-bound, so more of the work lands on tensor cores that
+          run bf16 at higher throughput.</li>
+        <li><strong>Optimizer is flat (1.00×).</strong> The step runs on fp32 master
+          weights and is memory-bandwidth-bound — lower-precision <em>compute</em> buys it
+          nothing. This is the "keep the accumulator in fp32" rule showing up in the timing.</li>
+        <li><strong>Watch the variance.</strong> Large-model bf16 has high run-to-run
+          spread (forward ±6.58 ms vs ±0.1 ms for fp32) — average over several iterations
+          before trusting a single number.</li>
+      </ul>
+    </section>
+
+    <!-- 5. MEMORY -->
+    <section>
+      <h2><span class="n">05</span> Memory in one training step</h2>
+      <p>Where does the memory go across forward → backward → optimizer? Four buckets — two
+        <strong>persistent</strong>, two <strong>transient</strong>. This steps through a tiny
+        <strong>2 → 2 → 2</strong> net with cross-entropy, counting every tensor in floats.</p>
+
+      <div class="mem-buckets">
+        <div class="mem-bcard" style="--bc:var(--m-param)"><span class="bn">Parameters</span><span class="bt">persistent</span><p>Weights + biases. Fixed by architecture; live the whole run.</p></div>
+        <div class="mem-bcard" style="--bc:var(--m-optim)"><span class="bn">Optimizer state</span><span class="bt">persistent</span><p>AdamW keeps two fp32 buffers per param (<code>m</code>, <code>v</code>) → <code>2×P</code>.</p></div>
+        <div class="mem-bcard" style="--bc:var(--m-act)"><span class="bn">Activations</span><span class="bt">transient · fwd</span><p>Saved in forward because backward needs them; freed as backward consumes them.</p></div>
+        <div class="mem-bcard" style="--bc:var(--m-grad)"><span class="bn">Gradients</span><span class="bt">transient · bwd</span><p>One per param, built in backward, read by the optimizer, then released.</p></div>
+      </div>
+
+      <div class="mem-net">
+        <svg viewBox="0 0 320 190" role="img" aria-label="2-input, 2-hidden, 2-output network">
+          <g class="ne">
+            <line x1="70" y1="60" x2="170" y2="60"/><line x1="70" y1="60" x2="170" y2="130"/>
+            <line x1="70" y1="130" x2="170" y2="60"/><line x1="70" y1="130" x2="170" y2="130"/>
+            <line x1="170" y1="60" x2="270" y2="60"/><line x1="170" y1="60" x2="270" y2="130"/>
+            <line x1="170" y1="130" x2="270" y2="60"/><line x1="170" y1="130" x2="270" y2="130"/>
+          </g>
+          <text class="nl" x="120" y="30" text-anchor="middle">W₁ b₁</text>
+          <text class="nl" x="220" y="30" text-anchor="middle">W₂ b₂</text>
+          <g>
+            <circle class="nn" cx="70" cy="60" r="16"/><circle class="nn" cx="70" cy="130" r="16"/>
+            <circle class="nn" cx="170" cy="60" r="16"/><circle class="nn" cx="170" cy="130" r="16"/>
+            <circle class="nn" cx="270" cy="60" r="16"/><circle class="nn" cx="270" cy="130" r="16"/>
+          </g>
+          <text class="nt" x="70" y="64" text-anchor="middle">x₁</text>
+          <text class="nt" x="70" y="134" text-anchor="middle">x₂</text>
+          <text class="nt" x="170" y="64" text-anchor="middle">a₁</text>
+          <text class="nt" x="170" y="134" text-anchor="middle">a₂</text>
+          <text class="nt" x="270" y="64" text-anchor="middle">z₁</text>
+          <text class="nt" x="270" y="134" text-anchor="middle">z₂</text>
+          <text class="nl" x="70" y="176" text-anchor="middle">input</text>
+          <text class="nl" x="170" y="176" text-anchor="middle">hidden · ReLU</text>
+          <text class="nl" x="270" y="176" text-anchor="middle">logits</text>
+        </svg>
+        <table class="mem-ptab">
+          <tr><td>W₁ (2×2)</td><td>4</td></tr>
+          <tr><td>b₁ (2)</td><td>2</td></tr>
+          <tr><td>W₂ (2×2)</td><td>4</td></tr>
+          <tr><td>b₂ (2)</td><td>2</td></tr>
+          <tr class="t"><td>params P</td><td>12</td></tr>
+        </table>
+      </div>
+      <p style="font-size:.9rem;color:var(--muted)">One example <code>x∈ℝ²</code>:
+        <code>a=ReLU(W₁x+b₁)</code>, <code>z=W₂a+b₂</code>, <code>p=softmax(z)</code>,
+        <code>L=−log p[y]</code>. A <em>steady-state</em> step — Adam's <code>m,v</code> already
+        exist from a prior <code>.step()</code>.</p>
+
+      <div class="mem-stage">
+        <div class="mem-ctl">
+          <button class="mem-btn" id="mem-prev">← prev</button>
+          <button class="mem-btn" id="mem-next">next →</button>
+          <span class="mem-pc" id="mem-pc"></span>
+        </div>
+        <div class="mem-track" id="mem-track"></div>
+        <div class="mem-body">
+          <div class="mem-read">
+            <span class="mem-k" id="mem-k"></span>
+            <div class="mem-name" id="mem-name"></div>
+            <p class="mem-desc" id="mem-desc"></p>
+            <div class="mem-chips">
+              <div class="mem-crow"><span class="rk">resident</span>
+                <span class="mem-chip" style="color:var(--m-param);border-color:color-mix(in srgb,var(--m-param) 45%,transparent)">params ·12</span>
+                <span class="mem-chip" style="color:var(--m-optim);border-color:color-mix(in srgb,var(--m-optim) 45%,transparent)">m,v ·24</span>
+              </div>
+              <div class="mem-crow"><span class="rk">activations</span><span id="mem-actc"></span></div>
+              <div class="mem-crow"><span class="rk">gradients</span><span id="mem-gradc"></span></div>
+            </div>
+          </div>
+          <div class="mem-meter">
+            <div class="mem-col" id="mem-col">
+              <div class="mem-seg param" id="mem-s-param"></div>
+              <div class="mem-seg optim" id="mem-s-optim"></div>
+              <div class="mem-seg act" id="mem-s-act"></div>
+              <div class="mem-seg grad" id="mem-s-grad"></div>
+              <div class="mem-peak" id="mem-peakline"><span>peak 48</span></div>
+            </div>
+            <div class="mem-side">
+              <div class="mem-tot"><span class="big" id="mem-tot">36</span> <span class="u">floats</span><span class="by" id="mem-by">144 B @ fp32</span></div>
+              <div class="mem-bd" id="mem-bd"></div>
+              <canvas class="mem-canvas" id="mem-spark" width="600" height="160" aria-hidden="true"></canvas>
+              <div class="mem-cax"><span>start</span><span>fwd</span><span>loss</span><span>bwd</span><span>opt</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <span class="tag">reading the sawtooth</span>
+        Params + Adam state are the resident floor — <code>3×P</code> before a single activation
+        exists, and only an optimizer change (8-bit, sharding) moves it. Activations are the per-step
+        sawtooth you actually control: checkpointing recomputes them, bf16 halves their bytes,
+        FlashAttention keeps attention's <code>S×S</code> block off HBM. This toy peaks at
+        end-of-backward because it's <em>param-heavy</em> (grads 12 &gt; activations 8); real
+        transformers invert that — activations scale with <code>batch×seq×layers</code>, so the peak
+        shifts to the forward→backward boundary, when every activation is still live.
+      </div>
+      <p style="font-size:.9rem;color:var(--muted)">Measure it the way you time things:
+        <code>torch.cuda.max_memory_allocated()</code> for the peak, and the memory-snapshot tool for
+        which tensor and which line caused it.</p>
+    </section>
+
+    <footer>gpu profiling · mixed precision · transformer training</footer>
+  </div>
+  <script>
+  (function () {
+    const P = 12, OPT = 24, SCALE = 56, COL_H = 260, PEAK = 48;
+    const phases = [
+      { k: "resident", n: "Step start", d: "Parameters and the Adam moments m, v sit resident. Gradients were released by zero_grad(set_to_none=True) at the end of the last step, so only the persistent floor is allocated.", act: 0, grad: 0, actT: [], gradT: [] },
+      { k: "forward · linear 1", n: "z = W₁x + b₁", d: "The first pre-activation is computed. Autograd stashes x and this pre-activation — both are needed later to form dW₁ and the ReLU gradient.", act: 4, grad: 0, actT: ["x", "W₁x+b₁"], gradT: [] },
+      { k: "forward · relu", n: "a = ReLU(·)", d: "The hidden activation a is produced and saved: it's the input to Linear 2, so backward needs it to form dW₂.", act: 6, grad: 0, actT: ["x", "W₁x+b₁", "a"], gradT: [] },
+      { k: "forward · linear 2", n: "z = W₂a + b₂", d: "The logits are computed and held alongside the earlier activations. Activation memory is now at its forward maximum for this net.", act: 8, grad: 0, actT: ["x", "W₁x+b₁", "a", "z"], gradT: [] },
+      { k: "loss · softmax + ce", n: "L = −log p[y]", d: "Softmax turns logits into probabilities p; cross-entropy reduces to a scalar. z is replaced by p, which backward needs for dz. Activations stay at their peak of 8.", act: 8, grad: 0, actT: ["x", "W₁x+b₁", "a", "p"], gradT: [] },
+      { k: "backward · linear 2", n: "dz, dW₂, db₂", d: "dz = p − onehot(y); the outer product with a gives dW₂, and dz gives db₂. a and p are consumed and freed — activations shrink while gradient memory begins to fill.", act: 4, grad: 6, actT: ["x", "W₁x+b₁"], gradT: ["dW₂", "db₂"] },
+      { k: "backward · linear 1", n: "dz₁, dW₁, db₁", d: "da = W₂ᵀdz, then dz₁ = da ⊙ ReLU′. The outer product with x gives dW₁. x and the pre-activation are freed — all activations gone, all four gradients now resident.", act: 0, grad: 12, actT: [], gradT: ["dW₁", "db₁", "dW₂", "db₂"] },
+      { k: "optimizer · adamw.step", n: "update m, v, params", d: "Moments and parameters are updated in place — no new large buffers. Gradients are still resident here because the step reads them. This is the memory peak for this net.", act: 0, grad: 12, actT: [], gradT: ["dW₁", "db₁", "dW₂", "db₂"] },
+      { k: "cleanup", n: "zero_grad(set_to_none)", d: "Gradients are released back to the allocator. Memory returns to the resident floor of 36 floats, ready for the next step.", act: 0, grad: 0, actT: [], gradT: [] },
+    ];
+
+    let i = 0;
+    const $ = id => document.getElementById(id);
+    const spark = $("mem-spark"), ctx = spark.getContext("2d");
+    const totals = phases.map(p => P + OPT + p.act + p.grad);
+    const track = $("mem-track");
+    phases.forEach((p, idx) => {
+      const b = document.createElement("button");
+      b.className = "mem-tick"; b.type = "button";
+      b.setAttribute("aria-label", "Phase: " + p.n);
+      b.addEventListener("click", () => { i = idx; render(); });
+      track.appendChild(b);
+    });
+
+    const chipHTML = (list, cls) => list.length
+      ? list.map(t => `<span class="mem-chip ${cls}">${t}</span>`).join(" ")
+      : '<span class="mem-chip none">— none</span>';
+    const segH = c => (c / SCALE) * COL_H;
+
+    function drawSpark() {
+      const cs = getComputedStyle(document.body);
+      const acc = (cs.getPropertyValue("--accent") || "#2a7ae2").trim();
+      const faint = (cs.getPropertyValue("--faint") || "#8f8f8f").trim();
+      const dpr = window.devicePixelRatio || 1;
+      const W = spark.clientWidth, H = spark.clientHeight;
+      spark.width = W * dpr; spark.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      const pad = 6, x = idx => pad + idx * (W - 2 * pad) / (phases.length - 1),
+        y = v => H - pad - (v / SCALE) * (H - 2 * pad);
+      ctx.strokeStyle = acc; ctx.globalAlpha = .3; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(pad, y(PEAK)); ctx.lineTo(W - pad, y(PEAK)); ctx.stroke();
+      ctx.setLineDash([]); ctx.globalAlpha = 1;
+      ctx.beginPath(); ctx.moveTo(x(0), y(totals[0]));
+      totals.forEach((t, idx) => ctx.lineTo(x(idx), y(t)));
+      ctx.lineTo(x(phases.length - 1), H - pad); ctx.lineTo(x(0), H - pad); ctx.closePath();
+      ctx.globalAlpha = .12; ctx.fillStyle = acc; ctx.fill(); ctx.globalAlpha = 1;
+      ctx.beginPath(); ctx.strokeStyle = acc; ctx.lineWidth = 1.75;
+      totals.forEach((t, idx) => idx ? ctx.lineTo(x(idx), y(t)) : ctx.moveTo(x(idx), y(t)));
+      ctx.stroke();
+      totals.forEach((t, idx) => {
+        ctx.beginPath();
+        ctx.fillStyle = idx === i ? acc : faint;
+        ctx.arc(x(idx), y(t), idx === i ? 4.5 : 2.5, 0, Math.PI * 2); ctx.fill();
+      });
+    }
+
+    function render() {
+      const p = phases[i];
+      $("mem-k").textContent = p.k;
+      $("mem-name").textContent = p.n;
+      $("mem-desc").textContent = p.d;
+      $("mem-pc").textContent = `phase ${i + 1} / ${phases.length}`;
+      $("mem-actc").innerHTML = chipHTML(p.actT, "act");
+      $("mem-gradc").innerHTML = chipHTML(p.gradT, "grad");
+      $("mem-s-param").style.height = segH(P) + "px";
+      $("mem-s-optim").style.height = segH(OPT) + "px";
+      $("mem-s-act").style.height = segH(p.act) + "px";
+      $("mem-s-grad").style.height = segH(p.grad) + "px";
+      $("mem-peakline").style.bottom = segH(PEAK) + "px";
+      const tot = totals[i];
+      $("mem-tot").textContent = tot;
+      $("mem-by").textContent = (tot * 4) + " B @ fp32";
+      $("mem-bd").innerHTML = [
+        ["Parameters", P, "var(--m-param)"],
+        ["Optimizer m,v", OPT, "var(--m-optim)"],
+        ["Activations", p.act, "var(--m-act)"],
+        ["Gradients", p.grad, "var(--m-grad)"],
+      ].map(([l, v, c]) =>
+        `<div class="mem-br"><span class="l"><span class="d" style="background:${c}"></span>${l}</span><span class="v">${v}</span></div>`
+      ).join("");
+      [...track.children].forEach((t, idx) => {
+        t.classList.toggle("active", idx === i);
+        t.classList.toggle("done", idx < i);
+      });
+      $("mem-prev").disabled = i === 0;
+      $("mem-next").disabled = i === phases.length - 1;
+      drawSpark();
+    }
+
+    $("mem-prev").addEventListener("click", () => { if (i > 0) { i--; render(); } });
+    $("mem-next").addEventListener("click", () => { if (i < phases.length - 1) { i++; render(); } });
+    window.addEventListener("resize", drawSpark);
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    (mq.addEventListener ? mq.addEventListener("change", drawSpark) : mq.addListener(drawSpark));
+    render();
+  })();
+  </script>
+</body>
+</html>
