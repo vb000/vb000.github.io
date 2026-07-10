@@ -272,21 +272,6 @@
       .mem-read { border-right: none; border-bottom: 1px solid var(--rule); }
     }
     @media (prefers-reduced-motion: reduce) { .mem-seg { transition: none; } }
-
-    /* ── activation checkpointing (section 06) ─────────────────── */
-    .ckpt-cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.2rem 0; }
-    .ckpt-col { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: .9rem; box-shadow: var(--shadow); }
-    .ckpt-h { font-family: var(--mono); font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; color: var(--faint); margin-bottom: .65rem; }
-    .ckpt-stack { display: flex; flex-direction: column; gap: .32rem; }
-    .ckpt-layer { display: flex; align-items: center; gap: .5rem; font-family: var(--mono); font-size: .72rem; padding: .32rem .5rem; border: 1px solid var(--border); border-radius: 6px; }
-    .ckpt-layer .ln { color: var(--muted); flex: none; width: 3.4rem; }
-    .ckpt-layer .st { flex: 1; height: .55rem; border-radius: 3px; }
-    .ckpt-layer .st.keep { background: var(--m-act); }
-    .ckpt-layer .st.drop { background: repeating-linear-gradient(45deg, var(--rule), var(--rule) 4px, transparent 4px, transparent 8px); border: 1px solid var(--rule); }
-    .ckpt-layer .tag { flex: none; font-size: .62rem; color: var(--faint); width: 5.2rem; text-align: right; }
-    .ckpt-foot { font-family: var(--mono); font-size: .68rem; color: var(--muted); margin-top: .65rem; line-height: 1.5; }
-    .ckpt-foot b { color: var(--fg); font-weight: 650; }
-    @media (max-width: 560px) { .ckpt-cmp { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -613,88 +598,44 @@ optimizer.<span class="fn">zero_grad</span>()</pre>
     <!-- 6. ACTIVATION CHECKPOINTING -->
     <section>
       <h2><span class="n">06</span> Activation checkpointing</h2>
-      <p>Section 05 called activations "the sawtooth you actually control." Checkpointing
-        (a.k.a. gradient checkpointing) is the main lever on it: <strong>trade compute for
-        memory</strong> by <em>not</em> saving a region's interior activations during forward,
-        then <strong>recomputing</strong> them on demand in backward.</p>
-
-      <h3>The mechanism</h3>
-      <p>Normally autograd stashes every intermediate a region needs for its backward. Wrap
-        the region in <code>checkpoint(fn, x)</code> and autograd instead runs the forward
-        under <code>no_grad</code> — building <em>no</em> graph and retaining <em>no</em>
-        interior tensors — keeping only the region's <strong>input</strong>. When backward
-        reaches the region, it re-runs the forward with grad enabled to rebuild the local
-        graph, differentiates it, then frees it again.</p>
-<pre><span class="kw">from</span> torch.utils.checkpoint <span class="kw">import</span> checkpoint
-
-<span class="com"># forward: run `block` under no_grad — no interior graph, no saved</span>
-<span class="com"># activations; only `x` (the boundary input) is retained.</span>
-y = <span class="fn">checkpoint</span>(block, x, use_reentrant=<span class="kw">False</span>)
-
-<span class="com"># backward: `block` is re-run with grad on to rebuild the local</span>
-<span class="com"># graph, differentiated, then thrown away again.</span></pre>
-
-      <div class="ckpt-cmp">
-        <div class="ckpt-col">
-          <div class="ckpt-h">default forward</div>
-          <div class="ckpt-stack">
-            <div class="ckpt-layer"><span class="ln">layer 0</span><span class="st keep"></span><span class="tag">saved</span></div>
-            <div class="ckpt-layer"><span class="ln">layer 1</span><span class="st keep"></span><span class="tag">saved</span></div>
-            <div class="ckpt-layer"><span class="ln">layer 2</span><span class="st keep"></span><span class="tag">saved</span></div>
-            <div class="ckpt-layer"><span class="ln">layer 3</span><span class="st keep"></span><span class="tag">saved</span></div>
-          </div>
-          <p class="ckpt-foot">every interior kept until backward consumes it → live activations
-            grow with depth, peak ∝&nbsp;<b>N&nbsp;layers</b>.</p>
-        </div>
-        <div class="ckpt-col">
-          <div class="ckpt-h">checkpointed</div>
-          <div class="ckpt-stack">
-            <div class="ckpt-layer"><span class="ln">layer 0</span><span class="st drop"></span><span class="tag">↻ recompute</span></div>
-            <div class="ckpt-layer"><span class="ln">layer 1</span><span class="st drop"></span><span class="tag">↻ recompute</span></div>
-            <div class="ckpt-layer"><span class="ln">layer 2</span><span class="st drop"></span><span class="tag">↻ recompute</span></div>
-            <div class="ckpt-layer"><span class="ln">layer 3</span><span class="st drop"></span><span class="tag">↻ recompute</span></div>
-          </div>
-          <p class="ckpt-foot">only each block's <b>input</b> is kept; interiors are rebuilt one
-            block at a time in backward → peak ∝&nbsp;<b>1&nbsp;block</b>.</p>
-        </div>
-      </div>
-
-      <h3>Per-block, in practice</h3>
-      <p>The usual granularity is one checkpoint per transformer block — the block's boundary
-        input (the residual stream) is cheap to keep, while its interior (attention's
-        <code>S×S</code> scores, the <code>4·d</code> FFN) is exactly what you want off the
-        live set. A boolean flag lets you A/B it:</p>
+      <p>The main lever on the §05 activation sawtooth: <strong>trade compute for memory</strong>.
+        Don't save a block's interior activations in the forward pass — recompute them in backward.</p>
 <pre><span class="kw">def</span> <span class="fn">forward</span>(self, x, act_ckpt=<span class="kw">False</span>):
     x = self.<span class="fn">embed</span>(x)
-    <span class="kw">for</span> layer <span class="kw">in</span> self.layers:                <span class="com"># one checkpoint per block</span>
+    <span class="kw">for</span> layer <span class="kw">in</span> self.layers:
         x = <span class="fn">checkpoint</span>(layer, x, use_reentrant=<span class="kw">False</span>) <span class="kw">if</span> act_ckpt <span class="kw">else</span> <span class="fn">layer</span>(x)
     <span class="kw">return</span> self.<span class="fn">head</span>(self.<span class="fn">norm</span>(x))</pre>
-      <p>This is the shape in <code>benchmark.py</code>: an <code>act_ckpt</code> bool threaded
-        through <code>LM.forward</code> wraps each block in <code>checkpoint()</code>, so
-        <code>max_memory_allocated()</code> with the flag off vs on isolates exactly the
-        activation savings — same params, optimizer, and batch everywhere else.</p>
+      <ul>
+        <li><code>layer(x)</code> — the default path. Autograd stashes every interior tensor the
+          block needs for its backward, so live activations grow with depth.</li>
+        <li><code>checkpoint(layer, x)</code> runs the block under <code>no_grad</code> in forward:
+          <strong>no interior graph, no interior activations</strong> — only <code>x</code>, the
+          block's boundary input, is kept.</li>
+        <li>In <strong>backward</strong>, <code>checkpoint</code> re-runs the block with grad on to
+          rebuild that local graph, differentiates it, then frees it — one block's interior
+          resident at a time instead of all N.</li>
+        <li>One checkpoint <strong>per block</strong> is the sweet spot: the boundary (residual
+          stream) is cheap to keep; the interior (attention's <code>S×S</code>, the <code>4·d</code>
+          FFN) is what you want off the live set.</li>
+      </ul>
 
       <div class="callout">
         <span class="tag">the trade</span>
-        Backward now pays for <strong>one extra forward</strong> of every checkpointed region.
-        In return, a region's interior activations never coexist — only its boundary input is
-        resident, and interiors are regenerated one region at a time. Memory-bound, deep models
-        win big; the extra recompute is pure GEMM the tensor cores absorb cheaply.
+        Backward pays for <strong>one extra forward</strong> of every checkpointed block; in return
+        its interior activations never coexist. Deep, memory-bound models win big — the recompute is
+        GEMM the tensor cores absorb cheaply.
       </div>
 
       <ul>
-        <li><strong>Pass <code>use_reentrant=False</code>.</strong> The modern non-reentrant
-          implementation; the legacy reentrant default has sharp edges (needs an input that
-          requires grad, mishandles <code>None</code> grads) and is being phased out.</li>
-        <li><strong>Dropout / RNG is handled.</strong> <code>checkpoint</code> saves and restores
-          the RNG state so the recomputed forward draws the <em>same</em> dropout mask — otherwise
-          the recomputed graph wouldn't match the one you differentiated.</li>
-        <li><strong>Autocast is preserved.</strong> With <code>use_reentrant=False</code> the
-          recompute replays the same autocast dtypes, so checkpointing composes with the mixed
-          precision from §04.</li>
-        <li><strong>Don't checkpoint cheap ops.</strong> Wrapping a norm or the LM head recomputes
-          it for ~no memory payoff — the boundary tensor is as big as the interior. Spend
-          checkpoints on the blocks that actually hold the activations.</li>
+        <li><strong><code>use_reentrant=False</code>.</strong> The modern implementation; the legacy
+          reentrant default has sharp edges (needs an input that requires grad, mishandles
+          <code>None</code> grads).</li>
+        <li><strong>Dropout / RNG is handled</strong> — <code>checkpoint</code> saves and restores
+          RNG state so the recomputed forward draws the same dropout mask.</li>
+        <li><strong>Autocast is preserved</strong> under <code>use_reentrant=False</code>, so
+          checkpointing composes with the mixed precision from §04.</li>
+        <li><strong>Don't checkpoint cheap ops.</strong> A norm or the head recomputes for ~no payoff
+          — spend checkpoints on the blocks that hold the activations.</li>
       </ul>
     </section>
 
